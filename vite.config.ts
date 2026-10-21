@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 import { MAX_BODY_BYTES } from './api/_lib/config.js';
 
 // Dev-only: serve POST /api/joke from the same shared module the Vercel function uses.
@@ -44,7 +45,39 @@ function jokeApiDevPlugin(): Plugin {
   };
 }
 
-// PWA plugin is added in Milestone 3.
 export default defineConfig({
-  plugins: [react(), jokeApiDevPlugin()],
+  plugins: [
+    react(),
+    jokeApiDevPlugin(),
+    VitePWA({
+      // No update prompt in the UI (PRD: single screen); a new version takes over
+      // only after all app windows are closed, never in the middle of a request (ADR-4).
+      registerType: 'prompt',
+      injectRegister: 'auto',
+      manifest: {
+        name: 'בדיחה בלחיצה',
+        short_name: 'בדיחה בלחיצה',
+        lang: 'he',
+        dir: 'rtl',
+        display: 'standalone',
+        start_url: '/',
+        scope: '/',
+        theme_color: '#F7AEB8',
+        background_color: '#FFF4ED',
+        icons: [
+          { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
+      },
+      workbox: {
+        // App shell only: HTML, JS, CSS, fonts, kitten illustration and icons.
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api\//],
+        // No runtimeCaching: /api/* responses are never cached.
+      },
+    }),
+  ],
 });

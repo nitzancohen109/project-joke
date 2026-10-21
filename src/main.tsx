@@ -1,8 +1,12 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import '@fontsource/heebo/400.css';
-import '@fontsource/heebo/700.css';
-import '@fontsource/assistant/400.css';
+// Hebrew + Latin subsets only, to keep the offline precache small.
+import '@fontsource/heebo/hebrew-400.css';
+import '@fontsource/heebo/latin-400.css';
+import '@fontsource/heebo/hebrew-700.css';
+import '@fontsource/heebo/latin-700.css';
+import '@fontsource/assistant/hebrew-400.css';
+import '@fontsource/assistant/latin-400.css';
 import './styles/tokens.css';
 import './styles/app.css';
 import App from './App';
