@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180">
+  <!-- Temporary kitten face, used until spec/assets/kitten.png is provided. -->
+  <path d="M38 78 L46 18 L88 52 Z" fill="#8B5E4D"/>
+  <path d="M162 78 L154 18 L112 52 Z" fill="#2E2424"/>
+  <path d="M50 66 L54 34 L78 54 Z" fill="#F7AEB8"/>
+  <path d="M150 66 L146 34 L122 54 Z" fill="#F7AEB8"/>
+  <ellipse cx="100" cy="100" rx="70" ry="62" fill="#FFF4ED"/>
+  <path d="M100 38 C70 38 40 56 32 90 C46 72 70 66 100 72 Z" fill="#8B5E4D"/>
+  <path d="M100 38 C130 38 160 56 168 90 C154 72 130 66 100 72 Z" fill="#2E2424"/>
+  <ellipse cx="72" cy="100" rx="11" ry="13" fill="#2E2424"/>
+  <ellipse cx="128" cy="100" rx="11" ry="13" fill="#2E2424"/>
+  <circle cx="75" cy="95" r="4" fill="#FFFFFF"/>
+  <circle cx="131" cy="95" r="4" fill="#FFFFFF"/>
+  <path d="M93 120 L107 120 L100 128 Z" fill="#D13B6B"/>
+  <path d="M100 128 C96 136 88 136 85 131 M100 128 C104 136 112 136 115 131" fill="none" stroke="#2E2424" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="58" cy="124" rx="10" ry="6" fill="#FBD6DC"/>
+  <ellipse cx="142" cy="124" rx="10" ry="6" fill="#FBD6DC"/>
+  <g stroke="#8B5E4D" stroke-width="2" stroke-linecap="round">
+    <line x1="20" y1="112" x2="52" y2="116"/>
+    <line x1="22" y1="126" x2="52" y2="122"/>
+    <line x1="180" y1="112" x2="148" y2="116"/>
+    <line x1="178" y1="126" x2="148" y2="122"/>
+  </g>
+</svg>

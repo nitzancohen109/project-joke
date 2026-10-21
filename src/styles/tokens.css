@@ -1,0 +1,33 @@
+/* Design tokens — spec/DESIGN.md section 2 */
+:root {
+  /* Palette */
+  --blush: #f7aeb8;
+  --pale-pink: #fbd6dc;
+  --cream: #fff4ed;
+  --charcoal: #2e2424;
+  --cocoa: #8b5e4d;
+  --white: #ffffff;
+  --rose: #d13b6b;
+  --rose-light: #d6436f;
+
+  /* Typography */
+  --font-primary: 'Heebo', 'Assistant', sans-serif;
+  --font-secondary: 'Assistant', 'Heebo', sans-serif;
+  --fs-h1: 36px;
+  --fs-h2: 24px;
+  --fs-body: 16px;
+  --fs-caption: 14px;
+
+  /* Shapes */
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Soft, diffused shadows */
+  --shadow-soft: 0 6px 20px rgba(209, 59, 107, 0.1);
+  --shadow-button: 0 8px 20px rgba(209, 59, 107, 0.3);
+
+  /* Spacing */
+  --gutter: 24px;
+  --gap: 24px;
+}
