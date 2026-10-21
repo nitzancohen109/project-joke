@@ -1,7 +1,50 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import { MAX_BODY_BYTES } from './api/_lib/config.js';
 
-// PWA plugin (M3) and the /api/joke dev middleware (M2) will be added here later.
+// Dev-only: serve POST /api/joke from the same shared module the Vercel function uses.
+function jokeApiDevPlugin(): Plugin {
+  return {
+    name: 'joke-api-dev',
+    apply: 'serve',
+    configResolved(config) {
+      // Expose only the server-side key to the dev server process (never to the browser).
+      const env = loadEnv(config.mode, process.cwd(), '');
+      if (env.OPENAI_API_KEY) process.env.OPENAI_API_KEY = env.OPENAI_API_KEY;
+    },
+    configureServer(server) {
+      server.middlewares.use('/api/joke', async (req, res) => {
+        const send = (status: number, body: unknown) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.setHeader('Cache-Control', 'no-store');
+          res.end(JSON.stringify(body));
+        };
+
+        try {
+          const chunks: Buffer[] = [];
+          let size = 0;
+          for await (const chunk of req) {
+            chunks.push(chunk);
+            size += chunk.length;
+            // Stop reading once over the cap; the shared handler then returns 413.
+            if (size > MAX_BODY_BYTES) break;
+          }
+          const rawBody = Buffer.concat(chunks).toString('utf8');
+
+          const mod = await server.ssrLoadModule('/api/_lib/joke.ts');
+          const { status, body } = await mod.handleJokeRequest(req.method, rawBody);
+          send(status, body);
+        } catch (err) {
+          console.error('[joke-dev] middleware error', err instanceof Error ? err.name : err);
+          send(502, { error: 'GENERATION_FAILED', message: 'לא הצלחנו ליצור בדיחה כרגע. אפשר לנסות שוב.' });
+        }
+      });
+    },
+  };
+}
+
+// PWA plugin is added in Milestone 3.
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), jokeApiDevPlugin()],
 });

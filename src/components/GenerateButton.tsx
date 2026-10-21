@@ -1,12 +1,15 @@
 import { TEXTS } from '../texts';
 import { BurstIcon, SparkleIcon } from './icons';
 
-// Milestone 1: no click action yet — joke generation is wired up in Milestone 2.
-export default function GenerateButton() {
+type Props = {
+  onClick: () => void;
+};
+
+export default function GenerateButton({ onClick }: Props) {
   return (
     <div className="generate">
       <BurstIcon className="burst burst--start" />
-      <button type="button" className="generate__button">
+      <button type="button" className="generate__button" onClick={onClick}>
         <span>{TEXTS.generateButton}</span>
         <SparkleIcon className="generate__sparkle" />
       </button>
