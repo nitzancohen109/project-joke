@@ -1,7 +1,14 @@
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { readFileSync } from 'node:fs';
 import { MAX_BODY_BYTES } from './api/_lib/config.js';
+
+// Security headers live in vercel.json; `vite preview` reuses them so the CSP can be checked locally.
+const vercelConfig = JSON.parse(readFileSync(new URL('./vercel.json', import.meta.url), 'utf8'));
+const securityHeaders: Record<string, string> = Object.fromEntries(
+  vercelConfig.headers[0].headers.map((h: { key: string; value: string }) => [h.key, h.value]),
+);
 
 // Dev-only: serve POST /api/joke from the same shared module the Vercel function uses.
 function jokeApiDevPlugin(): Plugin {
@@ -46,6 +53,7 @@ function jokeApiDevPlugin(): Plugin {
 }
 
 export default defineConfig({
+  preview: { headers: securityHeaders },
   plugins: [
     react(),
     jokeApiDevPlugin(),
